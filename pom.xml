@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.carbon.identity.application.authz.custom.handler</groupId>
+    <artifactId>org.wso2.carbon.identity.application.authz.custom.xacml.handler</artifactId>
+    <version>1.0.0</version>
+    <packaging>bundle</packaging>
+    <name>Custom - Identity XACML Authorization Handler</name>
+    <description>Provides XACML based authorization for applications
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
+            <version>${carbon.identity.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.balana</groupId>
+            <artifactId>org.wso2.balana.utils</artifactId>
+            <version>${balana.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.entitlement</artifactId>
+            <version>${carbon.identity.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.entitlement.common</artifactId>
+            <version>${carbon.identity.framework.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.1</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-scr-plugin</artifactId>
+                <version>1.7.2</version>
+                <executions>
+                    <execution>
+                        <id>generate-scr-scrdescriptor</id>
+                        <goals>
+                            <goal>scr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+
+
+                <version>2.3.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Axis2Module>${project.artifactId}-${project.version}</Axis2Module>
+                        <Import-Package>
+                            javax.servlet,
+                            javax.servlet.http,
+                            *;resolution:=optional,
+                            org.wso2.carbon.identity.application.authz.xacml;version="${carbon.identity.framework.version}",
+                            org.wso2.balana.attr;version="${balana.version}",
+                            org.wso2.balana.cond;version="${balana.version}",
+                            org.wso2.balana.ctx;version="${balana.version}",
+                            org.wso2.balana.utils.exception;version="${balana.version}",
+                            org.wso2.balana.utils.policy;version="${balana.version}",
+                            org.wso2.balana.utils.policy.dto;version="${balana.version}",
+                            org.wso2.carbon.identity.application.authentication.framework.config.model;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.context;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.exception;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.handler.request;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.model;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.util;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.core.util;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.entitlement;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.pip;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.common.dto;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.common.util;version="${carbon.identity.framework.import.version.range}",
+
+                            org.apache.commons.logging; version="${commons-logging.osgi.version.range}"
+                        </Import-Package>
+                        <Private-Package>
+                            org.wso2.carbon.identity.application.authz.custom.xacml.handler.internal,
+                        </Private-Package>
+                        <Export-Package>
+                            !org.wso2.carbon.identity.application.authz.custom.xacml.handler.internal,
+                            org.wso2.carbon.identity.application.authz.custom.xacml.handler.*;
+                            version="1.0.0"
+                        </Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>wso2-maven2-repository</id>
+            <url>http://dist.wso2.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <properties>
+        <commons-logging.osgi.version.range>[1.2,2.0)</commons-logging.osgi.version.range>
+        <carbon.identity.framework.import.version.range>[5.11.0, 6.0.0)</carbon.identity.framework.import.version.range>
+        <carbon.identity.framework.version>5.12.153</carbon.identity.framework.version>
+        <balana.version>1.1.2</balana.version>
+    </properties>
+
+
+</project>
