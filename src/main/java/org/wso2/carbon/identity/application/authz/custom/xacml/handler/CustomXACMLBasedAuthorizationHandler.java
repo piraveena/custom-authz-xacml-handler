@@ -117,17 +117,21 @@ public class CustomXACMLBasedAuthorizationHandler extends AbstractPostAuthnHandl
 
             String role = getRoleFromXACMLPolicy(responseString);
             if (log.isDebugEnabled()) {
-                log.debug("User role is:\n" + role);
+                log.debug("User role is:" + role);
             }
 
-            if(StringUtils.isNotEmpty(role)) {
+            if (StringUtils.isNotEmpty(role)) {
                 // Add the claim from XACML policy as user attribute.
-                setRoleAsUserAttributes(role,context);
+                setRoleAsUserAttributes(role, context);
                 return PostAuthnHandlerFlowStatus.SUCCESS_COMPLETED;
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("No applicable role is found in the XACML policy.");
+                }
+
             }
 
             return PostAuthnHandlerFlowStatus.INCOMPLETE;
-
 
         } catch (EntitlementException | FrameworkException e) {
             throw new PostAuthenticationFailedException("Authorization Failed", "Error while trying to evaluate " +

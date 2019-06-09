@@ -22,7 +22,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -30,15 +29,17 @@ import org.wso2.carbon.identity.application.authentication.framework.handler.req
 import org.wso2.carbon.identity.application.authz.custom.xacml.handler.CustomXACMLBasedAuthorizationHandler;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 
-@Component(
-        name = "identity.application.authz.xacml.component",
-        immediate = true
-)
-public class AppAuthzServiceComponent {
+/**
+ * @scr.component name="org.wso2.carbon.identity.application.authz.custom.xacml.handler.internal.AppCustomAuthzServiceComponent"
+ * immediate="true"
+ * @scr.reference name="identity.entitlement.service"
+ * interface="org.wso2.carbon.identity.entitlement.EntitlementService"cardinality="1..1"
+ * policy="dynamic" bind="setEntitlementService" unbind="unsetEntitlementService"
+ */
+public class AppCustomAuthzServiceComponent {
 
-    private static final Log log = LogFactory.getLog(AppAuthzServiceComponent.class);
+    private static final Log log = LogFactory.getLog(AppCustomAuthzServiceComponent.class);
 
-    @SuppressWarnings("unchecked")
     @Activate
     protected void activate(ComponentContext ctxt) {
 
@@ -55,13 +56,6 @@ public class AppAuthzServiceComponent {
         }
     }
 
-    @Reference(
-            name = "identity.entitlement.service",
-            service = EntitlementService.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetEntitlementService"
-    )
     protected void setEntitlementService(EntitlementService entitlementService) {
 
         if (log.isDebugEnabled()) {

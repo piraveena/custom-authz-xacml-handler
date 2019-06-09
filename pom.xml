@@ -76,7 +76,8 @@
                             javax.servlet,
                             javax.servlet.http,
                             *;resolution:=optional,
-                            org.wso2.carbon.identity.application.authz.xacml;version="${carbon.identity.framework.version}",
+                            org.osgi.framework; version="${osgi.framework.imp.pkg.version.range}",
+                            org.osgi.service.component.*; version="${osgi.service.component.imp.pkg.version.range}",
                             org.wso2.balana.attr;version="${balana.version}",
                             org.wso2.balana.cond;version="${balana.version}",
                             org.wso2.balana.ctx;version="${balana.version}",
@@ -95,7 +96,7 @@
                             org.wso2.carbon.identity.entitlement.common.dto;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.entitlement.common.util;version="${carbon.identity.framework.import.version.range}",
 
-                            org.apache.commons.logging; version="${commons-logging.osgi.version.range}"
+                            org.apache.commons.logging; version="${commons-logging.osgi.version.range}",
                         </Import-Package>
                         <Private-Package>
                             org.wso2.carbon.identity.application.authz.custom.xacml.handler.internal,
@@ -135,6 +136,8 @@
         <commons-logging.osgi.version.range>[1.2,2.0)</commons-logging.osgi.version.range>
         <carbon.identity.framework.import.version.range>[5.11.0, 6.0.0)</carbon.identity.framework.import.version.range>
         <carbon.identity.framework.version>5.12.153</carbon.identity.framework.version>
+        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
+        <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0)</osgi.service.component.imp.pkg.version.range>
         <balana.version>1.1.2</balana.version>
     </properties>
 
