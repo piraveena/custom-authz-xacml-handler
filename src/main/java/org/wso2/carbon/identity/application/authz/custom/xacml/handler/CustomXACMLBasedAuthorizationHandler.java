@@ -66,9 +66,9 @@ public class CustomXACMLBasedAuthorizationHandler extends AbstractPostAuthnHandl
 
     private static final String XACML_NS = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
     private static final String XACML_NS_PREFIX = "ns";
-    private static final String RULE_EFFECT_PERMIT = "Permit";
-    private static final String RULE_EFFECT_NOT_APPLICABLE = "NotApplicable";
-    public static final String ACTION_AUTHENTICATE = "authenticate";
+    private static final String ACTION_AUTHENTICATE = "authenticate";
+    private static final String roleClaimURI = "dynamic_role";
+
 
     @Override
     public int getPriority() {
@@ -147,9 +147,10 @@ public class CustomXACMLBasedAuthorizationHandler extends AbstractPostAuthnHandl
         Map<ClaimMapping, String> userAttributes =
                 context.getSequenceConfig().getAuthenticatedUser().getUserAttributes();
         Map<String, String> roles = new HashMap<>();
-        roles.put("http://wso2.org/claims/role", role);
+        //String roleClaimUri = "dynamic_role";
+        roles.put(roleClaimURI, role);
         if (log.isDebugEnabled()) {
-            log.debug(String.format("Setting role %s as user role", role));
+            log.debug(String.format("Setting role %s as user role with claimURI %s", role, roleClaimURI));
         }
         Map<ClaimMapping, String> rolesClaims = FrameworkUtils.buildClaimMappings(roles);
 
